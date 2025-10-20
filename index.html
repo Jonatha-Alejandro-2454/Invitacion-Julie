@@ -1,0 +1,792 @@
+<<<<<<< HEAD
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Elige tu Aventura de Terror, Julie!</title>
+    <!-- Carga de Tailwind CSS para un diseño moderno y responsive -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fuentes de Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nosifier&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Nosifier', cursive;
+            /* Nosifier como fuente principal de contenido */
+            color: #E0E0E0;
+            /* Texto claro */
+
+            /* 1. IMAGEN DE FONDO PRINCIPAL (Ghostface) con filtro oscuro para que el texto sea legible */
+            background-color: #000000;
+            /* El linear-gradient actúa como un filtro oscuro semi-transparente sobre la imagen */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+                url('https://img.freepik.com/foto-gratis/espeluznante-fondo-halloween_23-2151838525.jpg?semt=ais_hybrid&w=740&q=80');
+            background-size: contain;
+            background-position: center;
+            background-attachment: fixed;
+            /* La imagen se queda fija al hacer scroll */
+        }
+
+        /* 1. HACEMOS EL CONTENEDOR PRINCIPAL RELATIVO PARA POSICIONAR LOS ELEMENTOS DE ESQUINA */
+        .max-w-4xl {
+            position: relative;
+        }
+
+        /* 2. ESTILOS PARA LAS IMÁGENES DE ESQUINA SUPERPUESTAS (las arañas que están fuera del contenedor) */
+        .corner-image {
+            position: absolute;
+            width: 120px;
+            height: auto;
+            opacity: 0.3;
+            /* Sutil */
+            filter: drop-shadow(0 0 5px #FF4500);
+            /* Efecto neón naranja */
+            transition: opacity 0.3s;
+            z-index: 5;
+            /* Por encima del fondo, por debajo del contenido principal */
+        }
+
+        .corner-image:hover {
+            opacity: 0.8;
+        }
+
+        /* Posicionamiento y rotación para la esquina superior derecha */
+        .corner-image.top-right {
+            top: 50px;
+            right: -40px;
+            transform: rotate(15deg);
+        }
+
+        /* Posicionamiento y rotación para la esquina inferior izquierda */
+        .corner-image.bottom-left {
+            bottom: 50px;
+            left: -40px;
+            transform: rotate(-15deg);
+        }
+
+        /* Ocultar en pantallas pequeñas (menos de 768px) para evitar que estorben el layout móvil */
+        @media (max-width: 767px) {
+            .corner-image {
+                display: none;
+            }
+        }
+
+        .title-creepster {
+            font-family: 'Creepster', cursive;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 10px #FF4500;
+        }
+
+        /* ========================================================== */
+        /* ACTUALIZACIÓN: DIFUMINADO CON PSEUDO-ELEMENTO EN EL HEADER */
+        /* ========================================================== */
+        .header-ghostface {
+            /* Mantenemos el color base y las propiedades del contenedor */
+            background-color: rgba(0, 0, 0, 0.9);
+            border: 2px solid #FF4500;
+            box-shadow: 0 0 25px rgba(255, 69, 0, 0.7);
+            position: relative;
+            z-index: 10;
+            padding: 2rem 1.5rem;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            /* Importante: Eliminamos las propiedades de background-image de aquí */
+        }
+
+        /* Pseudo-elemento para aplicar la imagen de fondo con blur sin afectar el texto */
+        .header-ghostface::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
+            /* Propiedades de la imagen de fondo movidas aquí */
+            background-image: url('https://static.wikia.nocookie.net/scream/images/a/a5/Ghostface-Profile.jpg/revision/latest?cb=20241206125754');
+            background-repeat: no-repeat;
+            background-position: top right;
+            background-size: 30%;
+            background-origin: content-box;
+
+            /* FILTRO DE DIFUMINADO CLAVE */
+            filter: blur(2px);
+            opacity: 0.5;
+            /* Suaviza aún más la imagen */
+
+            z-index: -1;
+            /* Manda el fondo con blur detrás del texto */
+        }
+
+        /* ========================================================== */
+        /* NUEVA IMAGEN DE FONDO EN EL FOOTER (con color de calavera más sutil) */
+        /* ========================================================== */
+        footer {
+            /* Imagen de patrón (Calaveras/Huesos). El color #882c2c es un rojo oscuro para difuminar el contraste */
+            background-image: url('https://img.freepik.com/vector-gratis/fondo-huella-mano-ensangrentada_23-2150756479.jpg');
+            background-repeat: repeat-x;
+            background-position: bottom;
+            background-size: auto 20%;
+
+            /* Estilos originales */
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+
+        .card-ghost {
+            background-color: rgba(31, 31, 31, 0.9);
+            /* Semi-transparente (90% opaco) para ver el fondo sutilmente */
+            border: 1px solid #4a148c;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4), 0 10px 15px rgba(74, 20, 140, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 10;
+        }
+
+        .card-ghost:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.6), 0 15px 25px rgba(255, 69, 0, 0.5);
+            border-color: #FF4500;
+        }
+
+        .time-badge {
+            background-color: #4a148c;
+            color: #FBBF24;
+        }
+
+        .section-title {
+            font-family: 'Metal Mania', cursive;
+            border-left: 5px solid #FF4500;
+            padding-left: 1rem;
+        }
+
+        .attractive-list {
+            list-style-type: '🔪';
+            padding-left: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .attractive-list li {
+            padding-left: 0.5rem;
+            margin-bottom: 0.25rem;
+        }
+    </style>
+</head>
+
+<body class="p-4 sm:p-8">
+
+    <div class="max-w-4xl mx-auto">
+
+        <!-- IMAGEN SUPERPUESTA: SUPERIOR DERECHA (Cuchillo) -->
+        <img src="https://m.media-amazon.com/images/I/51xbZ6lYRyL._UF1000,1000_QL80_.jpg"
+            alt="Elemento decorativo superior derecho" class="corner-image top-right" />
+
+        <!-- IMAGEN SUPERPUESTA: INFERIOR IZQUIERDA (Araña) -->
+        <img src="https://m.media-amazon.com/images/I/51xbZ6lYRyL._UF1000,1000_QL80_.jpg"
+            alt="Elemento decorativo inferior izquierdo" class="corner-image bottom-left" />
+
+        <!-- INTRODUCCIÓN (CON FONDO SEMI-TRANSPARENTE PARA QUE SE VEA LA IMAGEN DE FONDO) -->
+        <header class="text-center mb-10 header-ghostface">
+            <!-- Título con la fuente Creepster -->
+            <h1 class="title-creepster text-5xl sm:text-6xl font-extrabold text-[#FF4500] mb-2 tracking-wider">
+                ¡Elige tu Aventura de Terror!
+            </h1>
+            <!-- Subtítulo en tono ÁMBAR OTOÑAL -->
+            <p class="text-xl sm:text-2xl font-bold text-amber-400 mb-4">
+                Propuestas para Halloween 🎃👻 y Nuestra Salida Pendiente
+            </p>
+            <p class="mt-3 text-lg font-semibold italic text-gray-300">
+                ¡Me emociona muchísimo! Tómate tu tiempo para ver las opciones de terror que propongo para nuestra
+                salida. **¡Todo es negociable!**
+            </p>
+        </header>
+
+        <!-- NOTA DEL REGALO (GRADIENTE PÚRPURA/NARANJA ORIGINAL) -->
+        <div class="bg-gradient-to-r from-[#4a148c] to-[#FF4500] text-white p-4 rounded-lg mb-8 text-center shadow-2xl">
+            <h2 class="text-xl font-bold">🎁 Recuerda:</h2>
+            <p class="text-lg">Tus souvenirs (regalos temáticos) te los entregaré en nuestra salida, ¡sea cual sea la
+                que elijamos!</p>
+        </div>
+
+        <!-- SECCIONES DE ACTIVIDADES -->
+        <div class="space-y-12">
+
+            <!-- 1. EXPERIENCIAS DE DÍA -->
+            <section>
+                <h2 class="section-title text-3xl font-bold mb-6 text-gray-100">
+                    1. Experiencias de Día (Inmersión Rápida / Arte) 🖼️
+                </h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Tim Burton Card -->
+                    <div class="card-ghost rounded-xl p-5">
+                        <h3 class="text-2xl font-bold text-amber-400 mb-2">🎬 El Laberinto de Tim Burton</h3>
+                        <p class="mb-3 text-sm italic text-gray-400">Horario: 10:00 a.m. – 8:00 p.m.</p>
+                        <p class="text-gray-300 font-semibold mb-2">**Lo atractivo:**</p>
+                        <ul class="attractive-list text-gray-300">
+                            <li>Experiencia inmersiva única y visual.</li>
+                            <li>Toque melancólico del universo Burton.</li>
+                            <li>Escenarios, figuras y arte original.</li>
+                        </ul>
+                        <span class="time-badge inline-block mt-3 px-3 py-1 text-sm font-semibold rounded-full">
+                            ⏱️ Duración: Aprox. 60 minutos (1 hora)
+                        </span>
+                    </div>
+                    <!-- Hacienda Maldita Card -->
+                    <div class="card-ghost rounded-xl p-5">
+                        <h3 class="text-2xl font-bold text-amber-400 mb-2">🏚️ Hacienda Maldita – Casa del Terror
+                            (Aztlán)</h3>
+                        <p class="mb-3 text-sm italic text-gray-400">Horario: 12:00 p.m. – 8:00 p.m.</p>
+                        <p class="text-gray-300 font-semibold mb-2">**Lo atractivo:**</p>
+                        <ul class="attractive-list text-gray-300">
+                            <li>Nueva atracción con sustos rápidos.</li>
+                            <li>Ambientación de leyendas y brujas mexicanas.</li>
+                            <li>Perfecto para algo intenso sin ser extremo.</li>
+                        </ul>
+                        <span class="time-badge inline-block mt-3 px-3 py-1 text-sm font-semibold rounded-full">
+                            ⏱️ Duración: 10 a 15 minutos de recorrido interno
+                        </span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. EXPERIENCIAS DE TARDE / ATARDECER -->
+            <section>
+                <h2 class="section-title text-3xl font-bold mb-6 text-gray-100">
+                    2. Experiencias de Tarde / Atardecer (Reto y Terror Psicológico) 🧠
+                </h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Escape Room Card -->
+                    <div class="card-ghost rounded-xl p-5 col-span-1 md:col-span-2">
+                        <h3 class="text-2xl font-bold text-amber-400 mb-2">🔒 Escape Room Temático (Terror y Retos
+                            Mentales)</h3>
+                        <p class="mb-3 text-sm italic text-gray-400">Horario: A convenir (generalmente de 12:00 p.m. a
+                            8:00 p.m.)</p>
+                        <p class="text-gray-300 font-semibold mb-2">**Lo atractivo:**</p>
+                        <ul class="attractive-list text-gray-300">
+                            <li>Terror psicológico en escenarios de asesinos o manicomios.</li>
+                            <li>Una hora de tensión, acertijos y trabajo en equipo.</li>
+                            <li>Adrenalina enfocada en la mente y el misterio.</li>
+                        </ul>
+                        <span class="time-badge inline-block mt-3 px-3 py-1 text-sm font-semibold rounded-full">
+                            ⏱️ Duración: 60 minutos (1 hora) de juego
+                        </span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. EXPERIENCIAS NOCTURNAS (4 OPCIONES FUERTES) -->
+            <section>
+                <h2 class="section-title text-3xl font-bold mb-6 text-gray-100">
+                    3. Experiencias Nocturnas (Terror Total e Inmersivo) 💀
+                </h2>
+                <!-- El grid se ajusta para 4 tarjetas: 2 filas de 2 -->
+                <div class="grid lg:grid-cols-2 gap-6">
+
+                    <!-- Six Flags Card -->
+                    <div class="card-ghost rounded-xl p-5">
+                        <h3 class="text-2xl font-bold text-amber-400 mb-2">🎢 Festival del Terror – Six Flags</h3>
+                        <p class="mb-3 text-sm italic text-gray-400">Horario Fijo: 5:30 p.m. – 12:00 a.m.</p>
+                        <p class="text-gray-300 font-semibold mb-2">**Lo atractivo:**</p>
+                        <ul class="attractive-list text-gray-300">
+                            <li>¡El evento más grande! **Máxima adrenalina.**</li>
+                            <li>Terror extremo con laberintos y zonas de espanto.</li>
+                            <li>Juegos mecánicos y ambiente de fiesta infernal.</li>
+                        </ul>
+                        <span
+                            class="time-badge inline-block mt-3 px-3 py-1 text-sm font-semibold rounded-full bg-red-800">
+                            ⏱️ Duración: Experiencia Larga, de 6 horas y media (toda la noche)
+                        </span>
+                    </div>
+
+                    <!-- Turibús Card -->
+                    <div class="card-ghost rounded-xl p-5">
+                        <h3 class="text-2xl font-bold text-amber-400 mb-2">🚌 Turibús del Terror</h3>
+                        <p class="mb-3 text-sm italic text-gray-400">Horario Fijo: 8:00 p.m. – 11:30 p.m.</p>
+                        <p class="text-gray-300 font-semibold mb-2">**Lo atractivo:**</p>
+                        <ul class="attractive-list text-gray-300">
+                            <li>Recorrido por casas embrujadas de la ciudad (Posada del Sol, Casa Negra). Actores,
+                                sustos garantizados y cena-snack.</li>
+                            <li>Ideal para ver los sitios clave desde el autobús.</li>
+                        </ul>
+                        <span class="time-badge inline-block mt-3 px-3 py-1 text-sm font-semibold rounded-full">
+                            ⏱️ Duración: Aprox. 3 horas
+                        </span>
+                    </div>
+
+                    <!-- NUEVO 1: Mansión del Pánico -->
+                    <div class="card-ghost rounded-xl p-5">
+                        <h3 class="text-2xl font-bold text-amber-400 mb-2">👻 La Mansión del Pánico – Recorrido Extremo
+                        </h3>
+                        <p class="mb-3 text-sm italic text-gray-400">Horario: Noche (Generalmente 6:00 p.m. – 11:00
+                            p.m.)</p>
+                        <p class="text-gray-300 font-semibold mb-2">**Lo atractivo:**</p>
+                        <ul class="attractive-list text-gray-300">
+                            <li>Experiencia de terror físico intensa en un set cinematográfico.</li>
+                            <li>Actores profesionales de tiempo completo.</li>
+                            <li>Perfecto si buscas una casa del terror de alto nivel.</li>
+                        </ul>
+                        <span class="time-badge inline-block mt-3 px-3 py-1 text-sm font-semibold rounded-full">
+                            ⏱️ Duración: 30 a 45 minutos (Recorrido interno)
+                        </span>
+                    </div>
+
+                    <!-- NUEVO 2: Concierto Candlelight -->
+                    <div class="card-ghost rounded-xl p-5">
+                        <h3 class="text-2xl font-bold text-amber-400 mb-2">🎶 Candlelight: Concierto de Halloween
+                            (Velas)</h3>
+                        <p class="mb-3 text-sm italic text-gray-400">Horario: Noche (Ej. 7:00 p.m. o 9:00 p.m.)</p>
+                        <p class="text-gray-300 font-semibold mb-2">**Lo atractivo:**</p>
+                        <ul class="attractive-list text-gray-300">
+                            <li>**Opción sofisticada y única.**</li>
+                            <li>Música clásica (orquesta de cuerdas) con temática de terror.</li>
+                            <li>Ambiente mágico a la luz de cientos de velas.</li>
+                            <li>Perfecto para quienes buscan una experiencia elegante.</li>
+                        </ul>
+                        <span class="time-badge inline-block mt-3 px-3 py-1 text-sm font-semibold rounded-full">
+                            ⏱️ Duración: Aprox. 90 minutos (1.5 horas)
+                        </span>
+                    </div>
+                </div>
+            </section>
+            <!-- 4. OPCIÓN ACOGEDORA (PLAN B/COMIDA) -->
+            <section>
+                <h2 class="section-title text-3xl font-bold mb-6 text-gray-100">
+                    4. Opción Acogedora (El Comodín) 🍽️
+                </h2>
+                <!-- Card única para el plan B -->
+                <div class="card-ghost rounded-xl p-5">
+                    <h3 class="text-2xl font-bold text-purple-400 mb-2">☕ La Salida "Sí o Sí": ¡Comida y Souvenirs!</h3>
+                    <p class="mb-3 text-sm italic text-gray-400">Horario: Tarde (Flexible, según tu día libre)</p>
+                    <p class="text-gray-300 font-semibold mb-2">**Lo atractivo:**</p>
+                    <ul class="attractive-list text-gray-300">
+                        <li>**¡Prioridad la compañía!** Ponernos al día con calma.</li>
+                        <li>Comida tranquila en lugar comodo o un nuevo sitio.</li>
+                        <li>Entrega de tus regalos y souvenirs temáticos garantizada.</li>
+                        <li>Perfecto si el tiempo o la energía no dan para una aventura de terror.</li>
+                    </ul>
+                    <span
+                        class="time-badge inline-block mt-3 px-3 py-1 text-sm font-semibold rounded-full bg-purple-900">
+                        ⏱️ Duración: A nuestro ritmo
+                    </span>
+                </div>
+            </section>
+        </div> <!-- Fin de Grid/Secciones --><!-- CIERRE -->
+        <footer class="mt-12 text-center p-6 bg-black bg-opacity-50 rounded-xl border-t border-gray-700">
+            <h2 class="text-3xl font-bold text-[#FF4500] mb-4">✨ ¡Elige tu Aventura!</h2>
+            <p class="text-lg leading-relaxed mb-4">
+                Si alguna actividad es tardía o queda lejos, no hay problema: **podemos considerar quedarnos en un
+                Airbnb temático o cercano** para disfrutar sin prisas y aprovechar la noche al máximo.
+            </p>
+            <!-- Texto destacado en ÁMBAR OTOÑAL -->
+            <p class="text-xl font-extrabold text-amber-400">
+                Dime qué día tienes libre y cuál de estas opciones es la que más te gustaría hacer.
+            </p>
+            <p class="text-2xl font-extrabold mt-3 text-white">
+                ¡Espero tu respuesta para planear el susto!
+            </p>
+        </footer>
+
+    </div>
+
+</body>
+
+=======
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Elige tu Aventura de Terror, Julie!</title>
+    <!-- Carga de Tailwind CSS para un diseño moderno y responsive -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fuentes de Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nosifier&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Nosifier', cursive;
+            /* Nosifier como fuente principal de contenido */
+            color: #E0E0E0;
+            /* Texto claro */
+
+            /* 1. IMAGEN DE FONDO PRINCIPAL (Ghostface) con filtro oscuro para que el texto sea legible */
+            background-color: #000000;
+            /* El linear-gradient actúa como un filtro oscuro semi-transparente sobre la imagen */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+                url('https://img.freepik.com/foto-gratis/espeluznante-fondo-halloween_23-2151838525.jpg?semt=ais_hybrid&w=740&q=80');
+            background-size: contain;
+            background-position: center;
+            background-attachment: fixed;
+            /* La imagen se queda fija al hacer scroll */
+        }
+
+        /* 1. HACEMOS EL CONTENEDOR PRINCIPAL RELATIVO PARA POSICIONAR LOS ELEMENTOS DE ESQUINA */
+        .max-w-4xl {
+            position: relative;
+        }
+
+        /* 2. ESTILOS PARA LAS IMÁGENES DE ESQUINA SUPERPUESTAS (las arañas que están fuera del contenedor) */
+        .corner-image {
+            position: absolute;
+            width: 120px;
+            height: auto;
+            opacity: 0.3;
+            /* Sutil */
+            filter: drop-shadow(0 0 5px #FF4500);
+            /* Efecto neón naranja */
+            transition: opacity 0.3s;
+            z-index: 5;
+            /* Por encima del fondo, por debajo del contenido principal */
+        }
+
+        .corner-image:hover {
+            opacity: 0.8;
+        }
+
+        /* Posicionamiento y rotación para la esquina superior derecha */
+        .corner-image.top-right {
+            top: 50px;
+            right: -40px;
+            transform: rotate(15deg);
+        }
+
+        /* Posicionamiento y rotación para la esquina inferior izquierda */
+        .corner-image.bottom-left {
+            bottom: 50px;
+            left: -40px;
+            transform: rotate(-15deg);
+        }
+
+        /* Ocultar en pantallas pequeñas (menos de 768px) para evitar que estorben el layout móvil */
+        @media (max-width: 767px) {
+            .corner-image {
+                display: none;
+            }
+        }
+
+        .title-creepster {
+            font-family: 'Creepster', cursive;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 10px #FF4500;
+        }
+
+        /* ========================================================== */
+        /* ACTUALIZACIÓN: DIFUMINADO CON PSEUDO-ELEMENTO EN EL HEADER */
+        /* ========================================================== */
+        .header-ghostface {
+            /* Mantenemos el color base y las propiedades del contenedor */
+            background-color: rgba(0, 0, 0, 0.9);
+            border: 2px solid #FF4500;
+            box-shadow: 0 0 25px rgba(255, 69, 0, 0.7);
+            position: relative;
+            z-index: 10;
+            padding: 2rem 1.5rem;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            /* Importante: Eliminamos las propiedades de background-image de aquí */
+        }
+
+        /* Pseudo-elemento para aplicar la imagen de fondo con blur sin afectar el texto */
+        .header-ghostface::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
+            /* Propiedades de la imagen de fondo movidas aquí */
+            background-image: url('https://static.wikia.nocookie.net/scream/images/a/a5/Ghostface-Profile.jpg/revision/latest?cb=20241206125754');
+            background-repeat: no-repeat;
+            background-position: top right;
+            background-size: 30%;
+            background-origin: content-box;
+
+            /* FILTRO DE DIFUMINADO CLAVE */
+            filter: blur(2px);
+            opacity: 0.5;
+            /* Suaviza aún más la imagen */
+
+            z-index: -1;
+            /* Manda el fondo con blur detrás del texto */
+        }
+
+        /* ========================================================== */
+        /* NUEVA IMAGEN DE FONDO EN EL FOOTER (con color de calavera más sutil) */
+        /* ========================================================== */
+        footer {
+            /* Imagen de patrón (Calaveras/Huesos). El color #882c2c es un rojo oscuro para difuminar el contraste */
+            background-image: url('https://img.freepik.com/vector-gratis/fondo-huella-mano-ensangrentada_23-2150756479.jpg');
+            background-repeat: repeat-x;
+            background-position: bottom;
+            background-size: auto 20%;
+
+            /* Estilos originales */
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+
+        .card-ghost {
+            background-color: rgba(31, 31, 31, 0.9);
+            /* Semi-transparente (90% opaco) para ver el fondo sutilmente */
+            border: 1px solid #4a148c;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4), 0 10px 15px rgba(74, 20, 140, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 10;
+        }
+
+        .card-ghost:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.6), 0 15px 25px rgba(255, 69, 0, 0.5);
+            border-color: #FF4500;
+        }
+
+        .time-badge {
+            background-color: #4a148c;
+            color: #FBBF24;
+        }
+
+        .section-title {
+            font-family: 'Metal Mania', cursive;
+            border-left: 5px solid #FF4500;
+            padding-left: 1rem;
+        }
+
+        .attractive-list {
+            list-style-type: '🔪';
+            padding-left: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .attractive-list li {
+            padding-left: 0.5rem;
+            margin-bottom: 0.25rem;
+        }
+    </style>
+</head>
+
+<body class="p-4 sm:p-8">
+
+    <div class="max-w-4xl mx-auto">
+
+        <!-- IMAGEN SUPERPUESTA: SUPERIOR DERECHA (Cuchillo) -->
+        <img src="https://m.media-amazon.com/images/I/51xbZ6lYRyL._UF1000,1000_QL80_.jpg"
+            alt="Elemento decorativo superior derecho" class="corner-image top-right" />
+
+        <!-- IMAGEN SUPERPUESTA: INFERIOR IZQUIERDA (Araña) -->
+        <img src="https://m.media-amazon.com/images/I/51xbZ6lYRyL._UF1000,1000_QL80_.jpg"
+            alt="Elemento decorativo inferior izquierdo" class="corner-image bottom-left" />
+
+        <!-- INTRODUCCIÓN (CON FONDO SEMI-TRANSPARENTE PARA QUE SE VEA LA IMAGEN DE FONDO) -->
+        <header class="text-center mb-10 header-ghostface">
+            <!-- Título con la fuente Creepster -->
+            <h1 class="title-creepster text-5xl sm:text-6xl font-extrabold text-[#FF4500] mb-2 tracking-wider">
+                ¡Elige tu Aventura de Terror!
+            </h1>
+            <!-- Subtítulo en tono ÁMBAR OTOÑAL -->
+            <p class="text-xl sm:text-2xl font-bold text-amber-400 mb-4">
+                Propuestas para Halloween 🎃👻 y Nuestra Salida Pendiente
+            </p>
+            <p class="mt-3 text-lg font-semibold italic text-gray-300">
+                ¡Me emociona muchísimo! Tómate tu tiempo para ver las opciones de terror que propongo para nuestra
+                salida. **¡Todo es negociable!**
+            </p>
+        </header>
+
+        <!-- NOTA DEL REGALO (GRADIENTE PÚRPURA/NARANJA ORIGINAL) -->
+        <div class="bg-gradient-to-r from-[#4a148c] to-[#FF4500] text-white p-4 rounded-lg mb-8 text-center shadow-2xl">
+            <h2 class="text-xl font-bold">🎁 Recuerda:</h2>
+            <p class="text-lg">Tus souvenirs (regalos temáticos) te los entregaré en nuestra salida, ¡sea cual sea la
+                que elijamos!</p>
+        </div>
+
+        <!-- SECCIONES DE ACTIVIDADES -->
+        <div class="space-y-12">
+
+            <!-- 1. EXPERIENCIAS DE DÍA -->
+            <section>
+                <h2 class="section-title text-3xl font-bold mb-6 text-gray-100">
+                    1. Experiencias de Día (Inmersión Rápida / Arte) 🖼️
+                </h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Tim Burton Card -->
+                    <div class="card-ghost rounded-xl p-5">
+                        <h3 class="text-2xl font-bold text-amber-400 mb-2">🎬 El Laberinto de Tim Burton</h3>
+                        <p class="mb-3 text-sm italic text-gray-400">Horario: 10:00 a.m. – 8:00 p.m.</p>
+                        <p class="text-gray-300 font-semibold mb-2">**Lo atractivo:**</p>
+                        <ul class="attractive-list text-gray-300">
+                            <li>Experiencia inmersiva única y visual.</li>
+                            <li>Toque melancólico del universo Burton.</li>
+                            <li>Escenarios, figuras y arte original.</li>
+                        </ul>
+                        <span class="time-badge inline-block mt-3 px-3 py-1 text-sm font-semibold rounded-full">
+                            ⏱️ Duración: Aprox. 60 minutos (1 hora)
+                        </span>
+                    </div>
+                    <!-- Hacienda Maldita Card -->
+                    <div class="card-ghost rounded-xl p-5">
+                        <h3 class="text-2xl font-bold text-amber-400 mb-2">🏚️ Hacienda Maldita – Casa del Terror
+                            (Aztlán)</h3>
+                        <p class="mb-3 text-sm italic text-gray-400">Horario: 12:00 p.m. – 8:00 p.m.</p>
+                        <p class="text-gray-300 font-semibold mb-2">**Lo atractivo:**</p>
+                        <ul class="attractive-list text-gray-300">
+                            <li>Nueva atracción con sustos rápidos.</li>
+                            <li>Ambientación de leyendas y brujas mexicanas.</li>
+                            <li>Perfecto para algo intenso sin ser extremo.</li>
+                        </ul>
+                        <span class="time-badge inline-block mt-3 px-3 py-1 text-sm font-semibold rounded-full">
+                            ⏱️ Duración: 10 a 15 minutos de recorrido interno
+                        </span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. EXPERIENCIAS DE TARDE / ATARDECER -->
+            <section>
+                <h2 class="section-title text-3xl font-bold mb-6 text-gray-100">
+                    2. Experiencias de Tarde / Atardecer (Reto y Terror Psicológico) 🧠
+                </h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Escape Room Card -->
+                    <div class="card-ghost rounded-xl p-5 col-span-1 md:col-span-2">
+                        <h3 class="text-2xl font-bold text-amber-400 mb-2">🔒 Escape Room Temático (Terror y Retos
+                            Mentales)</h3>
+                        <p class="mb-3 text-sm italic text-gray-400">Horario: A convenir (generalmente de 12:00 p.m. a
+                            8:00 p.m.)</p>
+                        <p class="text-gray-300 font-semibold mb-2">**Lo atractivo:**</p>
+                        <ul class="attractive-list text-gray-300">
+                            <li>Terror psicológico en escenarios de asesinos o manicomios.</li>
+                            <li>Una hora de tensión, acertijos y trabajo en equipo.</li>
+                            <li>Adrenalina enfocada en la mente y el misterio.</li>
+                        </ul>
+                        <span class="time-badge inline-block mt-3 px-3 py-1 text-sm font-semibold rounded-full">
+                            ⏱️ Duración: 60 minutos (1 hora) de juego
+                        </span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. EXPERIENCIAS NOCTURNAS (4 OPCIONES FUERTES) -->
+            <section>
+                <h2 class="section-title text-3xl font-bold mb-6 text-gray-100">
+                    3. Experiencias Nocturnas (Terror Total e Inmersivo) 💀
+                </h2>
+                <!-- El grid se ajusta para 4 tarjetas: 2 filas de 2 -->
+                <div class="grid lg:grid-cols-2 gap-6">
+
+                    <!-- Six Flags Card -->
+                    <div class="card-ghost rounded-xl p-5">
+                        <h3 class="text-2xl font-bold text-amber-400 mb-2">🎢 Festival del Terror – Six Flags</h3>
+                        <p class="mb-3 text-sm italic text-gray-400">Horario Fijo: 5:30 p.m. – 12:00 a.m.</p>
+                        <p class="text-gray-300 font-semibold mb-2">**Lo atractivo:**</p>
+                        <ul class="attractive-list text-gray-300">
+                            <li>¡El evento más grande! **Máxima adrenalina.**</li>
+                            <li>Terror extremo con laberintos y zonas de espanto.</li>
+                            <li>Juegos mecánicos y ambiente de fiesta infernal.</li>
+                        </ul>
+                        <span
+                            class="time-badge inline-block mt-3 px-3 py-1 text-sm font-semibold rounded-full bg-red-800">
+                            ⏱️ Duración: Experiencia Larga, de 6 horas y media (toda la noche)
+                        </span>
+                    </div>
+
+                    <!-- Turibús Card -->
+                    <div class="card-ghost rounded-xl p-5">
+                        <h3 class="text-2xl font-bold text-amber-400 mb-2">🚌 Turibús del Terror</h3>
+                        <p class="mb-3 text-sm italic text-gray-400">Horario Fijo: 8:00 p.m. – 11:30 p.m.</p>
+                        <p class="text-gray-300 font-semibold mb-2">**Lo atractivo:**</p>
+                        <ul class="attractive-list text-gray-300">
+                            <li>Recorrido por casas embrujadas de la ciudad (Posada del Sol, Casa Negra). Actores,
+                                sustos garantizados y cena-snack.</li>
+                            <li>Ideal para ver los sitios clave desde el autobús.</li>
+                        </ul>
+                        <span class="time-badge inline-block mt-3 px-3 py-1 text-sm font-semibold rounded-full">
+                            ⏱️ Duración: Aprox. 3 horas
+                        </span>
+                    </div>
+
+                    <!-- NUEVO 1: Mansión del Pánico -->
+                    <div class="card-ghost rounded-xl p-5">
+                        <h3 class="text-2xl font-bold text-amber-400 mb-2">👻 La Mansión del Pánico – Recorrido Extremo
+                        </h3>
+                        <p class="mb-3 text-sm italic text-gray-400">Horario: Noche (Generalmente 6:00 p.m. – 11:00
+                            p.m.)</p>
+                        <p class="text-gray-300 font-semibold mb-2">**Lo atractivo:**</p>
+                        <ul class="attractive-list text-gray-300">
+                            <li>Experiencia de terror físico intensa en un set cinematográfico.</li>
+                            <li>Actores profesionales de tiempo completo.</li>
+                            <li>Perfecto si buscas una casa del terror de alto nivel.</li>
+                        </ul>
+                        <span class="time-badge inline-block mt-3 px-3 py-1 text-sm font-semibold rounded-full">
+                            ⏱️ Duración: 30 a 45 minutos (Recorrido interno)
+                        </span>
+                    </div>
+
+                    <!-- NUEVO 2: Concierto Candlelight -->
+                    <div class="card-ghost rounded-xl p-5">
+                        <h3 class="text-2xl font-bold text-amber-400 mb-2">🎶 Candlelight: Concierto de Halloween
+                            (Velas)</h3>
+                        <p class="mb-3 text-sm italic text-gray-400">Horario: Noche (Ej. 7:00 p.m. o 9:00 p.m.)</p>
+                        <p class="text-gray-300 font-semibold mb-2">**Lo atractivo:**</p>
+                        <ul class="attractive-list text-gray-300">
+                            <li>**Opción sofisticada y única.**</li>
+                            <li>Música clásica (orquesta de cuerdas) con temática de terror.</li>
+                            <li>Ambiente mágico a la luz de cientos de velas.</li>
+                            <li>Perfecto para quienes buscan una experiencia elegante.</li>
+                        </ul>
+                        <span class="time-badge inline-block mt-3 px-3 py-1 text-sm font-semibold rounded-full">
+                            ⏱️ Duración: Aprox. 90 minutos (1.5 horas)
+                        </span>
+                    </div>
+                </div>
+            </section>
+            <!-- 4. OPCIÓN ACOGEDORA (PLAN B/COMIDA) -->
+            <section>
+                <h2 class="section-title text-3xl font-bold mb-6 text-gray-100">
+                    4. Opción Acogedora (El Comodín) 🍽️
+                </h2>
+                <!-- Card única para el plan B -->
+                <div class="card-ghost rounded-xl p-5">
+                    <h3 class="text-2xl font-bold text-purple-400 mb-2">☕ La Salida "Sí o Sí": ¡Comida y Souvenirs!</h3>
+                    <p class="mb-3 text-sm italic text-gray-400">Horario: Tarde (Flexible, según tu día libre)</p>
+                    <p class="text-gray-300 font-semibold mb-2">**Lo atractivo:**</p>
+                    <ul class="attractive-list text-gray-300">
+                        <li>**¡Prioridad la compañía!** Ponernos al día con calma.</li>
+                        <li>Comida tranquila en lugar comodo o un nuevo sitio.</li>
+                        <li>Entrega de tus regalos y souvenirs temáticos garantizada.</li>
+                        <li>Perfecto si el tiempo o la energía no dan para una aventura de terror.</li>
+                    </ul>
+                    <span
+                        class="time-badge inline-block mt-3 px-3 py-1 text-sm font-semibold rounded-full bg-purple-900">
+                        ⏱️ Duración: A nuestro ritmo
+                    </span>
+                </div>
+            </section>
+        </div> <!-- Fin de Grid/Secciones --><!-- CIERRE -->
+        <footer class="mt-12 text-center p-6 bg-black bg-opacity-50 rounded-xl border-t border-gray-700">
+            <h2 class="text-3xl font-bold text-[#FF4500] mb-4">✨ ¡Elige tu Aventura!</h2>
+            <p class="text-lg leading-relaxed mb-4">
+                Si alguna actividad es tardía o queda lejos, no hay problema: **podemos considerar quedarnos en un
+                Airbnb temático o cercano** para disfrutar sin prisas y aprovechar la noche al máximo.
+            </p>
+            <!-- Texto destacado en ÁMBAR OTOÑAL -->
+            <p class="text-xl font-extrabold text-amber-400">
+                Dime qué día tienes libre y cuál de estas opciones es la que más te gustaría hacer.
+            </p>
+            <p class="text-2xl font-extrabold mt-3 text-white">
+                ¡Espero tu respuesta para planear el susto!
+            </p>
+        </footer>
+
+    </div>
+
+</body>
+
+>>>>>>> e7d4d19de63b57d4c63457ccc2a1ec440f1ce827
+</html>
